@@ -55,6 +55,20 @@ int run_server()
     OpenSSL_add_ssl_algorithms();
     SSL_CTX* ctx = SSL_CTX_new(TLS_server_method());
     SSL_CTX_set_min_proto_version(ctx, TLS1_2_VERSION);
+    // // 设置 keylog 回调
+    // void keylog_callback(const SSL* ssl, const char* line)
+    // {
+    //     const char* keylog_path = getenv("SSLKEYLOGFILE");
+    //     if (!keylog_path)
+    //         keylog_path = "tls_keylog.txt";
+    //     FILE* keylog = fopen(keylog_path, "a");
+    //     if (keylog) {
+    //         fprintf(keylog, "%s\n", line);
+    //         fclose(keylog);
+    //     }
+    // }
+    // SSL_CTX_set_keylog_callback(ctx, keylog_callback);
+    // printf("[TLS] Keylog callback set. Keylog file: %s\n", getenv("SSLKEYLOGFILE") ? getenv("SSLKEYLOGFILE") : "tls_keylog.txt");
 
     if (SSL_CTX_use_certificate_file(ctx, CERT_FILE, SSL_FILETYPE_PEM) <= 0 || SSL_CTX_use_PrivateKey_file(ctx, KEY_FILE, SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
